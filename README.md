@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-# Tero
-A Terraform Framework 
-=======
+
 # Tero - Terraform Framework
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
@@ -146,5 +143,4 @@ limitations under the License.
 ```
 
 ---
-> "Infrastructure as code shouldn't mean infrastructure as complicated" - Tero Philosophy
->>>>>>> master
+
