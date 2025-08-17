@@ -1,0 +1,19 @@
+provider "aws" {
+  region = var.region
+  default_tags {
+    tags = {
+      Environment = var.environment
+      Project     = var.project_name
+      ManagedBy   = "Tero"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+  skip_provider_registration = true
+  subscription_id            = var.azure_subscription_id
+  client_id                  = var.azure_client_id
+  client_secret              = var.azure_client_secret
+  tenant_id                  = var.azure_tenant_id
+}
