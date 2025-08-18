@@ -1,0 +1,55 @@
+# policies/gcp-resource-limits.sentinel
+# Enforces resource limits for GCP resources
+
+import "tfplan/v2" as tfplan
+
+# Define resource limits
+limits = {
+  "google_compute_instance": {
+    "machine_type_max": "n1-standard-4", # Max machine type
+    "count_max": 5                      # Max instances
+  }
+}
+
+# Helper function to get machine type size (simplified)
+machine_type_size = func(type) {
+  sizes = {
+    "n1-standard-1": 1,
+    "n1-standard-2": 2,
+    "n1-standard-4": 4
+  }
+  return sizes[type] else 0
+}
+
+# Validate GCP compute instance limits
+validate_compute_instance = func(resource) {
+  if resource.type == "google_compute_instance" {
+    max_size = machine_type_size(limits.google_compute_instance.machine_type_max)
+    current_size = machine_type_size(resource.applied.machine_type)
+    instance_count = length(tfplan.resources.google_compute_instance)
+    
+    if current_size > max_size {
+      return false, "Machine type " + resource.applied.machine_type + " exceeds limit: " + limits.google_compute_instance.machine_type_max
+    }
+    if instance_count > limits.google_compute_instance.count_max {
+      return false, "Instance count " + instance_count + " exceeds limit: " + limits.google_compute_instance.count_max
+    }
+  }
+  return true, ""
+}
+
+# Main rule to enforce resource limits
+main = rule {
+  all tfplan.resources.google as _, r {
+    valid, _ = validate_compute_instance(r)
+    valid
+  }
+}
+
+# Print violation message if limits are exceeded
+for tfplan.resources.google as address, resource {
+  valid, message = validate_compute_instance(resource)
+  if not valid {
+    print("Resource", address, "violates limits:", message)
+  }
+}

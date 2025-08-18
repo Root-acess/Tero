@@ -1,0 +1,28 @@
+# policies/azure-naming.sentinel
+# Enforces naming conventions for Azure resources
+
+import "tfplan/v2" as tfplan
+
+# Define naming convention: lowercase, alphanumeric, hyphens, max 63 chars
+naming_pattern = "^[a-z0-9]([a-z0-9-]){0,61}[a-z0-9]$"
+
+# Validate resource name against naming pattern
+validate_name = func(resource) {
+  name = resource.applied.name
+  return match(name, naming_pattern)
+}
+
+# Main rule to enforce naming conventions on Azure resources
+main = rule {
+  all tfplan.resources.azurerm as _, r {
+    validate_name(r)
+  }
+}
+
+# Print violation message if naming convention is violated
+for tfplan.resources.azurerm as address, resource {
+  if not validate_name(resource) {
+    print("Resource", address, "has invalid name:", resource.applied.name, 
+          "must match pattern:", naming_pattern)
+  }
+}

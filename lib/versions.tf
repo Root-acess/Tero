@@ -1,3 +1,7 @@
+
+# lib/versions.tf
+# Specifies required Terraform and provider versions
+
 terraform {
   required_version = ">= 1.5.0"
 
@@ -16,3 +20,12 @@ terraform {
     }
   }
 }
+
+/*
+
+**Description**: Ensures compatibility by pinning Terraform and provider versions, aligning with Tero’s future-proof design.
+
+**Use Cases**:
+- Preventing version conflicts across projects.
+- Ensuring modules use compatible provider features.
+- Supporting consistent deployments in CI/CD pipelines. */

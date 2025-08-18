@@ -1,0 +1,34 @@
+# policies/aws-tags.sentinel
+# Enforces mandatory tagging for AWS resources
+
+import "tfplan/v2" as tfplan
+
+# Define required tags
+required_tags = ["Environment", "Project", "Owner"]
+
+# Check if all required tags are present on AWS resources
+validate_tags = func(resource) {
+  missing_tags = []
+  for required_tags as tag {
+    if tag not in resource.applied.tags {
+      missing_tags = append(missing_tags, tag)
+    }
+  }
+  return missing_tags
+}
+
+# Main rule to enforce tags on all AWS resources
+main = rule {
+  all tfplan.resources.aws as _, r {
+    missing = validate_tags(r)
+    length(missing) == 0
+  }
+}
+
+# Print violation message if tags are missing
+for tfplan.resources.aws as address, resource {
+  missing = validate_tags(resource)
+  if length(missing) > 0 {
+    print("Resource", address, "is missing required tags:", missing)
+  }
+}
