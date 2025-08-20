@@ -1,31 +1,22 @@
-# Local .terraform directories
-**/.terraform/*
-**/.terragrunt-cache/*
-
-# .tfstate files
+# Terraform
+.terraform/
 *.tfstate
-*.tfstate.*
-
-# Crash log files
-crash.log
-
-# Exclude all .tfvars files, which might contain sensitive data
-*.tfvars
+*.tfstate.backup
+terraform.tfvars
 *.tfvars.json
 
-# Ignore override files
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
+# Logs and temp files
+*.log
+*.tmp
 
-# Ignore CLI configuration files
-.terraformrc
-terraform.rc
-
-# Ignore IDE files
-.idea/
+# IDE and editor files
 .vscode/
+.idea/
+*.swp
 
-# Tero specific
-.tero-cache/
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Test artifacts
+test/test.plan

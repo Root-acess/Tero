@@ -1,15 +1,19 @@
-# Contributing to Tero
+# Contributing to Tero Framework
 
-## Module Development Guidelines
-1. Use consistent naming conventions
-2. Include comprehensive variables and outputs
-3. Add examples for each module
-4. Include automated tests
-5. Document using terraform-docs
+## Getting Started
+- Fork the repository and clone it locally.
+- Install dependencies: `terraform init`.
+- Run tests: `./services/test-module.sh --module compute`.
 
-## Workflow
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run format and validate scripts
-5. Submit a pull request
+## Submitting Changes
+- Create a branch for your feature: `git checkout -b feature-name`.
+- Commit changes with clear messages.
+- Push and submit a pull request via the GitHub UI.
+
+## Coding Standards
+- Follow Terraform best practices.
+- Run `./services/format.sh` before committing.
+- Ensure policies pass validation in Terraform Cloud.
+
+## Reporting Issues
+- Use the GitHub Issues tab with detailed descriptions.

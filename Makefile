@@ -1,26 +1,36 @@
-.PHONY: init format validate docs test clean
+```makefile
+# Makefile
+# Build automation tasks for the Tero Framework
+
+.PHONY: all init deploy destroy format validate test clean
+
+all: init deploy
 
 init:
-	@echo "Initializing Tero environment"
-	@./scripts/init.sh
+	./services/init.sh --project-name test-project --env dev --template basic-project
+
+deploy:
+	./services/deploy.sh --env dev
+
+destroy:
+	./services/destroy.sh --env dev
 
 format:
-	@echo "Formatting Terraform code"
-	@./scripts/format.sh
+	./services/format.sh
 
 validate:
-	@echo "Validating Terraform configurations"
-	@./scripts/validate.sh
-
-docs:
-	@echo "Generating documentation"
-	@./scripts/update-docs.sh
+	./services/validate.sh --env dev
 
 test:
-	@echo "Running tests"
-	@./scripts/test-module.sh
+	./services/test-module.sh --module compute --env dev --example basic
 
 clean:
-	@echo "Cleaning up temporary files"
-	@find . -name ".terraform" -exec rm -rf {} +
-	@find . -name ".terraform.lock.hcl" -delete
+	rm -rf test-project
+```
+
+**Description**: Defines Makefile targets for common Tero tasks.
+
+**Use Cases**:
+- Automating project workflows with `make`.
+- Simplifying command execution for developers.
+- Supporting CI/CD integration.
